@@ -1,15 +1,34 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CategorieTypeDto } from './dto/create-categorieType.dto';
 import { CreateMetaDto } from './dto/create-meta.dto';
 import { UpdateMetaDto } from './dto/update-meta.dto';
+import { CategorieType } from './entities/categorieType.entity';
 
 @Injectable()
 export class MetasService {
+  constructor(
+    @InjectRepository(CategorieType)
+    private readonly categorieTypeRepository: Repository<CategorieType>,
+  ) {}
+
   create(createMetaDto: CreateMetaDto) {
     return 'This action adds a new meta';
   }
 
-  findAll() {
-    return `This action returns all metas`;
+  async createCategorie(categorieTypeDto: CategorieTypeDto) {
+    try {
+      const category = await this.categorieTypeRepository.save(
+        categorieTypeDto,
+      );
+      return category;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async findAllCategoryType() {
+    return await this.categorieTypeRepository.find();
   }
 
   findOne(id: number) {
