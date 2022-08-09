@@ -8,4 +8,7 @@ export class CreateCategoryDto {
   @IsNotEmpty({ message: 'Type cannot be empty' })
   @IsNumber()
   type: number;
+
+  @IsString()
+  thumbNailImage: string;
 }

@@ -31,6 +31,17 @@ export class MetasService {
     return await this.categorieTypeRepository.find();
   }
 
+  async findOneCategoryType(id: number) {
+    const categorie = this.categorieTypeRepository.findOneBy({
+      id,
+    });
+    if (categorie) {
+      return categorie;
+    } else {
+      throw 'Categorie type not found with given id';
+    }
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} meta`;
   }

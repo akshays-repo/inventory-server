@@ -1,15 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CategorieType } from 'src/metas/entities/categorieType.entity';
+import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Category } from './entities/category.entity';
 
 @Injectable()
 export class CategoriesService {
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  constructor(
+    @InjectRepository(Category)
+    private readonly categorieRepository: Repository<Category>,
+    @InjectRepository(CategorieType)
+    private readonly categorieTypeRepository: Repository<CategorieType>,
+  ) {}
+
+  async create(createCategoryDto: CreateCategoryDto) {
+    try {
+      const categoryType = await this.categorieTypeRepository.findOneBy({
+        id: createCategoryDto.type,
+      });
+      if (categoryType) {
+        const saveCategory = {
+          name: createCategoryDto.name,
+          type: categoryType,
+        };
+        const categorie = await this.categorieRepository.save(saveCategory);
+        return categorie;
+      } else {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: 'category type not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all categories`;
+  async findAll() {
+    try {
+      return await this.categorieRepository.find();
+    } catch (error) {
+      throw error;
+    }
   }
 
   findOne(id: number) {
