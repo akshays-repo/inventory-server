@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AllocatedStocksService } from './allocated-stocks.service';
 import { CreateAllocatedStockDto } from './dto/create-allocated-stock.dto';
 import { UpdateAllocatedStockDto } from './dto/update-allocated-stock.dto';
 
 @Controller('allocated-stocks')
 export class AllocatedStocksController {
-  constructor(private readonly allocatedStocksService: AllocatedStocksService) {}
+  constructor(
+    private readonly allocatedStocksService: AllocatedStocksService,
+  ) {}
 
   @Post()
   create(@Body() createAllocatedStockDto: CreateAllocatedStockDto) {
@@ -23,7 +33,10 @@ export class AllocatedStocksController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAllocatedStockDto: UpdateAllocatedStockDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateAllocatedStockDto: UpdateAllocatedStockDto,
+  ) {
     return this.allocatedStocksService.update(+id, updateAllocatedStockDto);
   }
 

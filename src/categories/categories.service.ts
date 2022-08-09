@@ -24,6 +24,7 @@ export class CategoriesService {
         const saveCategory = {
           name: createCategoryDto.name,
           type: categoryType,
+          thumbNailImage: createCategoryDto.thumbNailImage,
         };
         const categorie = await this.categorieRepository.save(saveCategory);
         return categorie;

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CategorieTypeDto } from './dto/create-categorieType.dto';
@@ -38,7 +38,13 @@ export class MetasService {
     if (categorie) {
       return categorie;
     } else {
-      throw 'Categorie type not found with given id';
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'category type not found',
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 

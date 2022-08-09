@@ -3,6 +3,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -15,10 +17,12 @@ export class Category {
   @Column()
   name: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   thumbNailImage: string;
 
-  @OneToOne(() => CategorieType)
+  @ManyToOne(() => CategorieType, { eager: true })
   @JoinColumn()
   type: CategorieType;
 }
