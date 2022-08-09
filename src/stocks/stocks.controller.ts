@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { StocksService } from './stocks.service';
 import { CreateStockDto } from './dto/create-stock.dto';
 import { UpdateStockDto } from './dto/update-stock.dto';
@@ -7,16 +15,25 @@ import { UpdateStockDto } from './dto/update-stock.dto';
 export class StocksController {
   constructor(private readonly stocksService: StocksService) {}
 
-  @Post()
-  create(@Body() createStockDto: CreateStockDto) {
-    return this.stocksService.create(createStockDto);
+  @Post('/allocated')
+  createAllocated(@Body() createStockDto: CreateStockDto) {
+    return this.stocksService.createAllocated(createStockDto);
   }
 
-  @Get()
-  findAll() {
-    return this.stocksService.findAll();
+  @Post('/consumable')
+  createConsumable(@Body() createStockDto: CreateStockDto) {
+    return this.stocksService.createConsumable(createStockDto);
   }
 
+  @Get('/consumable')
+  findAllConsumable() {
+    return this.stocksService.findAllConsumable();
+  }
+
+  @Get('/allocated')
+  findAllAllocated() {
+    return this.stocksService.findAllAllocated();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.stocksService.findOne(+id);

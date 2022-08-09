@@ -18,7 +18,6 @@ import { StocksModule } from './stocks/stocks.module';
     MetasModule,
     CategoriesModule,
     ProductsModule,
-
     RecentActivitiesModule,
     StocksModule,
   ],
