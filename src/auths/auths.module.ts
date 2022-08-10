@@ -4,6 +4,7 @@ import { AuthsController } from './auths.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { JwtStrategy } from './jwt.strategy';
         expiresIn: 3600,
       },
     }),
+    UsersModule,
   ],
   controllers: [AuthsController],
   providers: [AuthsService, JwtStrategy],

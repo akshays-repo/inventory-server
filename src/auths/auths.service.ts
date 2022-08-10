@@ -3,15 +3,63 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { JwtPayload } from './jwt-payload.interface';
+import { Auth, google } from 'googleapis';
+import GoogleTokenDto from './dto/google-token.dto';
+import { UsersService } from 'src/users/users.service';
+
+// export interface Todo {
+//   expiry_date: number;
+//   scopes: string[];
+//   azp: string;
+//   aud: string;
+//   sub: string;
+//   exp: string;
+//   email: string;
+//   email_verified: string;
+//   access_type: string;
+// }
 
 @Injectable()
 export class AuthsService {
-  constructor(private jwtService: JwtService) {}
+  private oauthClient: Auth.OAuth2Client;
 
-  async userAuth(createAuthDto: CreateAuthDto) {
-    const payload: JwtPayload = { login: true };
-    const accessToken = await this.jwtService.sign(payload);
-    return { accessToken };
+  constructor(
+    private jwtService: JwtService,
+    private readonly usersService: UsersService,
+  ) {
+    const clientId =
+      '331290056902-i949kh9as7vvpd7ahgh9rv43f6ok3pra.apps.googleusercontent.com';
+    const clientSecret = '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';
+    this.oauthClient = new google.auth.OAuth2(clientId, clientSecret);
+  }
+
+  async loginGoogleUser(token: string) {
+    try {
+      const tokenInfo = await this.oauthClient.getTokenInfo(token);
+
+      const name = tokenInfo.email.split('@')[0];
+      const email = tokenInfo.email.split('@')[1];
+      console.log('outgoing token', tokenInfo);
+      return tokenInfo;
+    } catch (error) {
+      console.log('login google error', { error });
+      throw new Error(error);
+    }
+  }
+
+  async userAuth(token: GoogleTokenDto) {
+    try {
+      const tokenInfo = await this.oauthClient.getTokenInfo(token.token);
+      const name = tokenInfo.email.split('@')[0];
+      const email = tokenInfo.email.split('@')[1];
+      let user = await this.usersService.findByEmail(email);
+      if (!user) {
+        user = await this.usersService.create({ name, email });
+      }
+      const payload: JwtPayload = { userInfo: user };
+      const accessToken = await this.jwtService.sign(payload);
+      return { accessToken };
+    } catch (error) {}
   }
 
   findAll() {

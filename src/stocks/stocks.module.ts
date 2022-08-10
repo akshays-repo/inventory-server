@@ -7,7 +7,6 @@ import {
   AllocatedStocks,
   ConsumableStocks,
 } from './entities/stock.entity';
-import { Product } from 'src/products/entities/product.entity';
 import { ProductsModule } from 'src/products/products.module';
 import { AuthsModule } from 'src/auths/auths.module';
 
@@ -17,7 +16,6 @@ import { AuthsModule } from 'src/auths/auths.module';
     ProductsModule,
     AuthsModule,
   ],
-
   controllers: [StocksController],
   providers: [StocksService],
 })

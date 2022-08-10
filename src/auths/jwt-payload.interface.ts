@@ -1,3 +1,5 @@
+import { User } from 'src/users/entities/user.entity';
+
 export interface JwtPayload {
-  login: boolean;
+  userInfo: User;
 }

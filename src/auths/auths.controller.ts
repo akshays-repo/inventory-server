@@ -1,15 +1,36 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthsService } from './auths.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
+import GoogleTokenDto from './dto/google-token.dto';
 
 @Controller('auths')
 export class AuthsController {
   constructor(private readonly authsService: AuthsService) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authsService.userAuth(createAuthDto);
+  @Post('/google/login')
+  async googleLogin(@Body() body: GoogleTokenDto, @Req() req) {
+    console.log('req incoming ', body);
+    try {
+      return await this.authsService.userAuth(body);
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'Error while logging in with google',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
   }
 
   @Post('/test')
