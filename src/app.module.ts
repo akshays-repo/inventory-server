@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
 import { StocksModule } from './stocks/stocks.module';
+import { AuthsModule } from './auths/auths.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { StocksModule } from './stocks/stocks.module';
     ProductsModule,
     RecentActivitiesModule,
     StocksModule,
+    AuthsModule,
   ],
   controllers: [],
   providers: [],
