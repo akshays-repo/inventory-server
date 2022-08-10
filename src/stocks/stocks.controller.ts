@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { StocksService } from './stocks.service';
 import { CreateStockDto } from './dto/create-stock.dto';
 import { UpdateStockDto } from './dto/update-stock.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('stocks')
+@UseGuards(AuthGuard())
 export class StocksController {
   constructor(private readonly stocksService: StocksService) {}
 
