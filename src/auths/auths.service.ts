@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { JwtPayload } from './jwt-payload.interface';
 import { Auth, google } from 'googleapis';
@@ -33,25 +32,14 @@ export class AuthsService {
     this.oauthClient = new google.auth.OAuth2(clientId, clientSecret);
   }
 
-  async loginGoogleUser(token: string) {
-    try {
-      const tokenInfo = await this.oauthClient.getTokenInfo(token);
-
-      const name = tokenInfo.email.split('@')[0];
-      const email = tokenInfo.email.split('@')[1];
-      console.log('outgoing token', tokenInfo);
-      return tokenInfo;
-    } catch (error) {
-      console.log('login google error', { error });
-      throw new Error(error);
-    }
-  }
-
   async userAuth(token: GoogleTokenDto) {
     try {
       const tokenInfo = await this.oauthClient.getTokenInfo(token.token);
       const name = tokenInfo.email.split('@')[0];
       const email = tokenInfo.email.split('@')[1];
+      if (email !== 'brainwired.in') {
+        throw new Error('Invalid emailid');
+      }
       let user = await this.usersService.findByEmail(email);
       if (!user) {
         user = await this.usersService.create({ name, email });
@@ -59,7 +47,9 @@ export class AuthsService {
       const payload: JwtPayload = { userInfo: user };
       const accessToken = await this.jwtService.sign(payload);
       return { accessToken };
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   }
 
   findAll() {

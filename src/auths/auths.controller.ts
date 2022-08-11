@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpException,
   HttpStatus,
   Post,
@@ -10,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthsService } from './auths.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import GoogleTokenDto from './dto/google-token.dto';
 
 @Controller('auths')
