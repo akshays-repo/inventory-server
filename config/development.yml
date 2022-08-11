@@ -1,0 +1,15 @@
+server: 
+  port: 3000
+
+db:
+  host: 'localhost'
+  type: 'postgres'
+  port: 5432
+  database: 'bwstocks'
+  synchronize: true
+  username: 'postgres'
+  password: 'root'
+
+jwt:
+  secret: 'fuckyournationalism'
+

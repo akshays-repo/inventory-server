@@ -1,0 +1,12 @@
+!3k9GL0MOxcA
+
+Host
+ec2-54-159-175-38.compute-1.amazonaws.com
+Database
+dd0ptd8vdtj192
+User
+szxmyjgxolnyve
+Port
+5432
+Password
+4e7b3bf62713cec61bd0246e0e3bb4e5144c34e5745eea0d800f3aee33c2d724

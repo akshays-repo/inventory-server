@@ -14,7 +14,7 @@ import { AuthsModule } from './auths/auths.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRootAsync(typeOrmConfig),
+    TypeOrmModule.forRoot(typeOrmConfig),
     UsersModule,
     MetasModule,
     CategoriesModule,
