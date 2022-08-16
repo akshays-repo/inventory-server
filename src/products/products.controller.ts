@@ -28,9 +28,18 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
+  @Get('/slug/:slug')
+  findOneBySlug(@Param('slug') slug: string) {
+    return this.productsService.findOneBySlug(slug);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
+  }
+  @Get('/search/:query')
+  searchMany(@Param('query') query: string) {
+    return this.productsService.searchMany(query);
   }
 
   @Patch(':id')

@@ -16,13 +16,15 @@ export class Category {
 
   @Column()
   name: string;
+  @Column()
+  slug: string;
 
   @Column({
     nullable: true,
   })
   thumbNailImage: string;
 
-  @ManyToOne(() => CategorieType, { eager: true })
+  @ManyToOne(() => CategorieType, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn()
   type: CategorieType;
 }

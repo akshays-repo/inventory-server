@@ -3,6 +3,7 @@ import { CategorieType } from 'src/metas/entities/categorieType.entity';
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -12,10 +13,19 @@ import {
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Index({ fulltext: true })
   @Column()
   name: string;
+
+  @Index({ fulltext: true })
+  @Column()
+  slug: string;
+
+  @Index({ fulltext: true })
   @Column()
   manufature: string;
+
   @Column({ nullable: true })
   thumNailImage: string;
 

@@ -2,19 +2,19 @@ server:
   port: 3000
 
 db:
-  # host: 'localhost'
-  # type: 'postgres'
-  # port: 5432
-  # database: 'bwstocks'
-  synchronize: true
-  # username: 'postgres'
-  # password: 'root'
-  host: 'ec2-54-159-175-38.compute-1.amazonaws.com'
+  host: 'localhost'
   type: 'postgres'
   port: 5432
-  database: 'dd0ptd8vdtj192'
-  username: 'szxmyjgxolnyve'
-  password: '4e7b3bf62713cec61bd0246e0e3bb4e5144c34e5745eea0d800f3aee33c2d724'
+  database: 'bwstocks'
+  synchronize: true
+  username: 'postgres'
+  password: 'root'
+  # host: 'ec2-54-159-175-38.compute-1.amazonaws.com'
+  # type: 'postgres'
+  # port: 5432
+  # database: 'dd0ptd8vdtj192'
+  # username: 'szxmyjgxolnyve'
+  # password: '4e7b3bf62713cec61bd0246e0e3bb4e5144c34e5745eea0d800f3aee33c2d724'
 
 jwt:
   secret: 'fuckyournationalism'

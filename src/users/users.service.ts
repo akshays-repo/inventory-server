@@ -15,6 +15,7 @@ export class UsersService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
       const user = await this.user.save(createUserDto);
+      console.log({ user });
       return user;
     } catch (error) {
       throw new Error('Unable to create new user');
@@ -22,7 +23,7 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.user.find();
   }
 
   findOne(id: number) {

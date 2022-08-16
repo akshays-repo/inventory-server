@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
+import slugify from 'slugify';
 
 @Injectable()
 export class CategoriesService {
@@ -25,6 +26,11 @@ export class CategoriesService {
           name: createCategoryDto.name,
           type: categoryType,
           thumbNailImage: createCategoryDto.thumbNailImage,
+          slug: slugify(createCategoryDto.name, {
+            replacement: '-', // replace spaces with replacement character, defaults to `-`
+            lower: true, // convert to lower case, defaults to `false`
+            trim: true, // trim leading and trailing replacement chars, defaults to `true`
+          }),
         };
         const categorie = await this.categorieRepository.save(saveCategory);
         return categorie;
@@ -45,6 +51,20 @@ export class CategoriesService {
   async findAll() {
     try {
       return await this.categorieRepository.find();
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'category type not found',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  async findBySlug(slug: string) {
+    try {
+      return await this.categorieRepository.findOneBy({ slug: slug });
     } catch (error) {
       throw error;
     }

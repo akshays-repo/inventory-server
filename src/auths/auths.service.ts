@@ -44,6 +44,7 @@ export class AuthsService {
       if (!user) {
         user = await this.usersService.create({ name, email });
       }
+      console.log({ user });
       const payload: JwtPayload = { userInfo: user };
       const accessToken = await this.jwtService.sign(payload);
       return { accessToken };

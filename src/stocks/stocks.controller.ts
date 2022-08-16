@@ -14,7 +14,7 @@ import { UpdateStockDto } from './dto/update-stock.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('stocks')
-@UseGuards(AuthGuard())
+// @UseGuards(AuthGuard())
 export class StocksController {
   constructor(private readonly stocksService: StocksService) {}
 
@@ -26,6 +26,16 @@ export class StocksController {
   @Post('/consumable')
   createConsumable(@Body() createStockDto: CreateStockDto) {
     return this.stocksService.createConsumable(createStockDto);
+  }
+
+  @Get('/allocated/:slug')
+  getAllocatedBySlug(@Param('slug') slug: string) {
+    return this.stocksService.findAllocatedBySlug(slug);
+  }
+
+  @Get('/consumable/:slug')
+  getConsumableBySlug(@Param('slug') slug: string) {
+    return this.stocksService.findConsumableBySlug(slug);
   }
 
   @Get('/consumable')

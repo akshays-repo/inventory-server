@@ -6,3 +6,4 @@ db:
   database: 'dd0ptd8vdtj192'
   username: 'szxmyjgxolnyve'
   password: '4e7b3bf62713cec61bd0246e0e3bb4e5144c34e5745eea0d800f3aee33c2d724'
+  url: 'postgres://szxmyjgxolnyve:4e7b3bf62713cec61bd0246e0e3bb4e5144c34e5745eea0d800f3aee33c2d724@ec2-54-159-175-38.compute-1.amazonaws.com:5432/dd0ptd8vdtj192'

@@ -23,7 +23,7 @@ export class StocksService {
     try {
       const { quantity, productId } = createStockDto;
       const product = await this.productService.findOne(productId);
-      if (product.category.type.id !== 2) {
+      if (product.category.type.id !== 1) {
         throw new HttpException(
           {
             status: HttpStatus.BAD_REQUEST,
@@ -50,7 +50,7 @@ export class StocksService {
     try {
       const { quantity, productId } = createStockDto;
       const product = await this.productService.findOne(productId);
-      if (product.category.type.id !== 3) {
+      if (product.category.type.id !== 2) {
         throw new HttpException(
           {
             status: HttpStatus.BAD_REQUEST,
@@ -79,6 +79,22 @@ export class StocksService {
   async findAllAllocated(): Promise<AllocatedStocks[]> {
     try {
       return await this.allocatedStocks.find();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findAllocatedBySlug(slug: string): Promise<AllocatedStocks> {
+    try {
+      return await this.allocatedStocks.findOneBy({ product: { slug } });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findConsumableBySlug(slug: string): Promise<ConsumableStocks> {
+    try {
+      return await this.consumableStocks.findOneBy({ product: { slug } });
     } catch (error) {
       throw error;
     }
