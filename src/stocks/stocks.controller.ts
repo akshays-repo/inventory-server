@@ -52,11 +52,29 @@ export class StocksController {
     return this.stocksService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStockDto: UpdateStockDto) {
-    return this.stocksService.update(+id, updateStockDto);
+  @Patch('/consumable/:id')
+  updateConsumable(
+    @Param('id') id: string,
+    @Body() updateStockDto: UpdateStockDto,
+  ) {
+    try {
+      return this.stocksService.updateConsumable(+id, updateStockDto);
+    } catch (error) {
+      throw error;
+    }
   }
 
+  @Patch('/allocated/:id')
+  updateAllocated(
+    @Param('id') id: string,
+    @Body() updateStockDto: UpdateStockDto,
+  ) {
+    try {
+      return this.stocksService.updateAllocated(+id, updateStockDto);
+    } catch (error) {
+      throw error;
+    }
+  }
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.stocksService.remove(+id);

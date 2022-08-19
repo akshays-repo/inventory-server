@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/products/entities/product.entity';
 import { ProductsService } from 'src/products/products.service';
@@ -14,6 +20,8 @@ export class StocksService {
     private readonly allocatedStocks: Repository<AllocatedStocks>,
     @InjectRepository(ConsumableStocks)
     private readonly consumableStocks: Repository<ConsumableStocks>,
+
+    @Inject(forwardRef(() => ProductsService))
     private readonly productService: ProductsService,
   ) {}
 
@@ -21,7 +29,7 @@ export class StocksService {
     createStockDto: CreateStockDto,
   ): Promise<AllocatedStocks> {
     try {
-      const { quantity, productId } = createStockDto;
+      const { quntity: quantity, productId } = createStockDto;
       const product = await this.productService.findOne(productId);
       if (product.category.type.id !== 1) {
         throw new HttpException(
@@ -48,7 +56,7 @@ export class StocksService {
     createStockDto: CreateStockDto,
   ): Promise<ConsumableStocks> {
     try {
-      const { quantity, productId } = createStockDto;
+      const { quntity: quantity, productId } = createStockDto;
       const product = await this.productService.findOne(productId);
       if (product.category.type.id !== 2) {
         throw new HttpException(
@@ -86,7 +94,19 @@ export class StocksService {
 
   async findAllocatedBySlug(slug: string): Promise<AllocatedStocks> {
     try {
-      return await this.allocatedStocks.findOneBy({ product: { slug } });
+      const stock = await this.allocatedStocks.findOneBy({ product: { slug } });
+      console.log('The stock is ', { stock });
+      if (stock) {
+        return stock;
+      } else {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: 'The stock is not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
     } catch (error) {
       throw error;
     }
@@ -94,7 +114,20 @@ export class StocksService {
 
   async findConsumableBySlug(slug: string): Promise<ConsumableStocks> {
     try {
-      return await this.consumableStocks.findOneBy({ product: { slug } });
+      const stock = await this.consumableStocks.findOneBy({
+        product: { slug },
+      });
+      if (stock) {
+        return stock;
+      } else {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: 'The stock is not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
     } catch (error) {
       throw error;
     }
@@ -104,8 +137,24 @@ export class StocksService {
     return `This action returns a #${id} stock`;
   }
 
-  update(id: number, updateStockDto: UpdateStockDto) {
-    return `This action updates a #${id} stock`;
+  async updateAllocated(id: number, updateStockDto: UpdateStockDto) {
+    const { quntity } = updateStockDto;
+
+    console.log({ id, quntity });
+    const allocatedStock = await this.allocatedStocks
+      .createQueryBuilder()
+      .update({ quntity })
+      .where({ id })
+      .execute();
+  }
+  async updateConsumable(id: number, updateStockDto: UpdateStockDto) {
+    const { quntity } = updateStockDto;
+
+    const consumableStocks = await this.consumableStocks
+      .createQueryBuilder()
+      .update({ quntity })
+      .where({ id })
+      .execute();
   }
 
   remove(id: number) {

@@ -27,9 +27,9 @@ export class CategoriesService {
           type: categoryType,
           thumbNailImage: createCategoryDto.thumbNailImage,
           slug: slugify(createCategoryDto.name, {
-            replacement: '-', // replace spaces with replacement character, defaults to `-`
-            lower: true, // convert to lower case, defaults to `false`
-            trim: true, // trim leading and trailing replacement chars, defaults to `true`
+            replacement: '-',
+            lower: true,
+            trim: true,
           }),
         };
         const categorie = await this.categorieRepository.save(saveCategory);

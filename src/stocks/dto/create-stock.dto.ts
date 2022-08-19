@@ -2,7 +2,7 @@ import { IsPositive } from 'class-validator';
 
 export class CreateStockDto {
   @IsPositive()
-  quantity: number;
+  quntity: number;
   @IsPositive()
   productId: number;
 }
